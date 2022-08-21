@@ -1,14 +1,21 @@
 <?php
 
-include_once("DB.php");
-include_once("dbobjects/User.php");
+header("Content-Type: application/json; charset=UTF-8");
+
+include_once("../database/DB.php");
+include_once("../dbobjects/User.php");
+include_once("Auth.php");
 
 $db = new DB();
 $pdo = $db->createPDO();
+$auth = new Auth();
 
 $data = json_decode(file_get_contents('php://input'));
-$user = new User($data->name, $data->surname, $data->username,
-            password_hash($data->password, PASSWORD_BCRYPT), $pdo);
+$user = new User($pdo);
+$user->name = $data->name;
+$user->surname = $data->surname;
+$user->username = $data->username;
+$user->password = $data->password;
 
 if (empty($data->name) || empty($data->surname) || empty($data->username) ||
     empty($data->password)) {
@@ -22,5 +29,10 @@ if (empty($data->name) || empty($data->surname) || empty($data->username) ||
     echo "Невозможно создать пользователя" . "\n";
 } else {
     http_response_code(200);
-    echo "Пользователь успешно зарегистрирован";
+    echo json_encode(
+        array (
+            "message" => "Регистрация прошла успешно",
+            "token" => $auth->createToken()
+        )
+    );
 }
