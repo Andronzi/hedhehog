@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/hedhehog.iml" filepath="$PROJECT_DIR$/.idea/hedhehog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../hedgehog/.idea/hedhehog.iml" filepath="$PROJECT_DIR$/../hedgehog/.idea/hedhehog.iml" />
     </modules>
   </component>
 </project>
