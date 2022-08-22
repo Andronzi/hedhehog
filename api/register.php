@@ -16,15 +16,17 @@ $user->name = $data->name;
 $user->surname = $data->surname;
 $user->username = $data->username;
 $user->password = $data->password;
+$user->roleId = $data->roleId;
+$user->getUserId();
 
 if (empty($data->name) || empty($data->surname) || empty($data->username) ||
     empty($data->password)) {
     http_response_code(400);
     echo "Введены неверные данные" . "\n";
-} else if (!$user->isUsernameExists($pdo)) {
+} else if ($user->isUsernameExists()) {
     http_response_code(400);
     echo "Пользователь с таким username уже существует" . "\n";
-} else if (!$user->createUser($pdo)) {
+} else if (!$user->createUser()) {
     http_response_code(500);
     echo "Невозможно создать пользователя" . "\n";
 } else {
@@ -32,7 +34,7 @@ if (empty($data->name) || empty($data->surname) || empty($data->username) ||
     echo json_encode(
         array (
             "message" => "Регистрация прошла успешно",
-            "token" => $auth->createToken()
+            "token" => $auth->createToken($user->id)
         )
     );
 }
